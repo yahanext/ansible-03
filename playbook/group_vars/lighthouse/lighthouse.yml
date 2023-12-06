@@ -1,0 +1,4 @@
+---
+lighthouse_url: "https://github.com/VKCOM/lighthouse.git"
+lighthouse_dir: "/home/yaha/lighthouse"
+nginx_user_name: "root"

@@ -9,8 +9,14 @@ clickhouse:
 vector:
   hosts:
     clickhouse-02:
-      ansible_host: 192.168.98.89
+      ansible_host: 192.168.98.93
       ansible_connection: ssh
       ansible_user: yaha
       ansible_ssh_private_key_file: ~/.ssh/id_ed25519.pub
-      
+lighthouse:
+  hosts:
+    clickhouse-03:
+      ansible_host: 192.168.98.92
+      ansible_connection: ssh
+      ansible_user: yaha
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519.pub

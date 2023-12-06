@@ -71,3 +71,46 @@
         group: "{{ ansible_user_gid }}"
         backup: true
       notify: Start vector service
+- name: Install lighthouse
+  hosts: clickhouse-03
+  handlers:
+    - name: Nginx reload
+      become: true
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+  pre_tasks:
+    - name: Install git
+      become: true
+      ansible.builtin.yum:
+        name: git
+        state: present
+    - name: Install epel-release
+      become: true
+      ansible.builtin.yum:
+        name: epel-release
+        state: present
+    - name: Install nginx
+      become: true
+      ansible.builtin.yum:
+        name: nginx
+        state: present
+    - name: Apply nginx config
+      become: true
+      ansible.builtin.template:
+        src: nginx.j2
+        dest: /etc/nginx/nginx.conf
+        mode: 0644
+  tasks:
+    - name: Clone repository
+      ansible.builtin.git:
+        repo: "{{ lighthouse_url }}"
+        dest: "{{ lighthouse_dir }}"
+        version: master
+    - name: Apply config
+      become: true
+      ansible.builtin.template:
+        src: lighthouse.conf.j2
+        dest: /etc/nginx/conf.d/lighthouse.conf
+        mode: 0644
+      notify: Nginx reload
